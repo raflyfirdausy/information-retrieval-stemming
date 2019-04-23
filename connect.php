@@ -16,6 +16,17 @@ while($aw = mysqli_fetch_array($hasil)){
 
 if(isset($_POST['kata'])){
     $kata = $_POST['kata'];
-    $kata_dasar = stemming($kata,$data); //memeriksa hasil stemming pada kata dasar
+    $pisah = explode(" ", $kata);
+    $kata_dasar = "";
+    $index = 0;
+    foreach($pisah as $p){
+        $_kata_dasar = stemming($p,$data); //memeriksa hasil stemming pada kata dasar
+        if($index == 0){
+            $kata_dasar .=  $_kata_dasar;
+        } else {
+            $kata_dasar .= " " . $_kata_dasar;
+        }
+        $index++;
+    }    
 }
 ?>
