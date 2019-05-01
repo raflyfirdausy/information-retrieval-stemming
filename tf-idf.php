@@ -54,7 +54,7 @@ $KATA_DASAR_TABLE = array();
 }
 
 echo '<br>'.
-    '<table border="1" style="width:75%;">'.
+    '<table border="1" style="width:50%;">'.
     '<tr>'.
         '<th rowspan="2">Q</th>'.
         '<th colspan="'. sizeof($hasilStemming) .'">tf</th>'.
@@ -103,9 +103,9 @@ echo '<br>'.
 ?>
 
 <br><br>
-<table border="1" style="width:75%;">
+<table border="1" style="width:50%;">
     <tr>
-        <th rowspan="2">Q</th>
+        <!-- <th rowspan="2">Q</th> -->
         <th colspan="<?= sizeof($hasilStemming); ?>">W = tf * (IDF +1)</th>
     </tr>
     <tr>
@@ -115,7 +115,8 @@ echo '<br>'.
         }
         $indexW = 0;
         foreach($KATA_DASAR_TABLE as $a){
-            echo "<tr><td>$a</td>";
+            echo "<tr>";
+            // echo "<td>$a</td>";
 
             for($i = 0 ; $i < sizeof($hasilStemming) ; $i++ ){
                 $_pisah2 = preg_replace('/\s+/', '_', $hasilStemming[$i]);
@@ -135,4 +136,83 @@ echo '<br>'.
         ?>
     </tr>
 </table>
+
+<b><h3>Langkah 2 : Hitung Bobot Kalimat</h3></b>
+
+<?php 
+    for($i = 0 ; $i < sizeof($hasilStemming) ; $i++ ){
+        echo "<b>Dokumen " . ($i + 1) . " (d" . ($i + 1) . ")</b> : <br>";
+        $_pisah2 = preg_replace('/\s+/', '_', $hasilStemming[$i]);
+        $_pisah3 = explode("_", $_pisah2);
+        $tfIdfArray = array();
+        foreach($_pisah3 as $x){
+            if($x != ""){
+                if(!in_array($x, $tfIdfArray)){
+                    array_push($tfIdfArray, $x);
+                }
+            }
+        }
+
+        $indexTF = 0;
+        foreach($tfIdfArray as $t){
+            if($indexTF != sizeof($tfIdfArray) - 1){
+                echo "tfidf($t) + ";
+            } else {
+                echo "tfidf($t)";
+            }
+            $indexTF++;
+        }
+        echo "<br><br>";
+    }
+
+    echo "<b><h3>Pembobotan</b></h3>";
+
+    for($i = 0 ; $i < sizeof($hasilStemming) ; $i++ ){
+        echo "<b>Dokumen " . ($i + 1) . " (d" . ($i + 1) . ")</b> : ";
+        $_pisah2 = preg_replace('/\s+/', '_', $hasilStemming[$i]);
+        $_pisah3 = explode("_", $_pisah2);
+        $tfIdfArray = array();
+        foreach($_pisah3 as $x){
+            if($x != ""){
+                if(!in_array($x, $tfIdfArray)){
+                    array_push($tfIdfArray, $x);
+                }
+            }
+        }
+
+        // die(var_dump($tfIdfArray));
+        $indexTF = 0;
+        $jumlah = 0;
+        foreach($tfIdfArray as $t){ 
+            // die(var_dump($hasilStemming));
+            // die(var_dump($t));
+            $KataDiCari = "";
+            foreach($hasilStemming as $q){
+                $KataDiCari .= $q;
+            }
+            // die(var_dump($KataDiCari));       
+            $_pisah2 = preg_replace('/\s+/', '_', $KataDiCari);
+            $_pisah3 = explode("_", $_pisah2);
+            // die(var_dump($_pisah3));
+            $count = 0;
+            // die(var_dump($t));
+            for($a = 0 ; $a < sizeof($_pisah3) ; $a++ ){
+                // die(var_dump($_pisah3[$a]));
+                if($_pisah3[$a] == $t){
+                    $count++;                    
+                }
+            }
+            $jumlah = $jumlah + $count;
+            if($indexTF != sizeof($tfIdfArray) - 1){
+                echo $count . " + ";
+            } else {
+                echo $count . " = " . $jumlah;
+            }
+            
+            $indexTF++;
+        }
+
+        echo "<br>";
+    }
+?>
    
