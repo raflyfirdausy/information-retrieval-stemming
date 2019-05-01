@@ -105,7 +105,7 @@ echo '<br>'.
 <br><br>
 <table border="1" style="width:50%;">
     <tr>
-        <!-- <th rowspan="2">Q</th> -->
+        <th rowspan="2">Q</th>
         <th colspan="<?= sizeof($hasilStemming); ?>">W = tf * (IDF +1)</th>
     </tr>
     <tr>
@@ -116,7 +116,7 @@ echo '<br>'.
         $indexW = 0;
         foreach($KATA_DASAR_TABLE as $a){
             echo "<tr>";
-            // echo "<td>$a</td>";
+            echo "<td>$a</td>";
 
             for($i = 0 ; $i < sizeof($hasilStemming) ; $i++ ){
                 $_pisah2 = preg_replace('/\s+/', '_', $hasilStemming[$i]);
@@ -166,7 +166,7 @@ echo '<br>'.
     }
 
     echo "<b><h3>Pembobotan</b></h3>";
-
+    $PengurutanKalimatArray = array();
     for($i = 0 ; $i < sizeof($hasilStemming) ; $i++ ){
         echo "<b>Dokumen " . ($i + 1) . " (d" . ($i + 1) . ")</b> : ";
         $_pisah2 = preg_replace('/\s+/', '_', $hasilStemming[$i]);
@@ -184,7 +184,7 @@ echo '<br>'.
         $indexTF = 0;
         $jumlah = 0;
         foreach($tfIdfArray as $t){ 
-            // die(var_dump($hasilStemming));
+            // die(var_dump($hasilStemming[$i]));
             // die(var_dump($t));
             $KataDiCari = "";
             foreach($hasilStemming as $q){
@@ -203,6 +203,12 @@ echo '<br>'.
                 }
             }
             $jumlah = $jumlah + $count;
+            $pKalimat = [
+                "kalimat" => $hasilStemming[$i],
+                "jumlah" => $jumlah,
+                "dokumen" => "Dokumen " . ($i + 1) . " (d" . ($i + 1) . ")"
+            ];
+
             if($indexTF != sizeof($tfIdfArray) - 1){
                 echo $count . " + ";
             } else {
@@ -210,9 +216,87 @@ echo '<br>'.
             }
             
             $indexTF++;
-        }
-
+        }    
+        array_push($PengurutanKalimatArray, $pKalimat);
         echo "<br>";
     }
+    // die(json_encode($PengurutanKalimatArray));
+
+    function array_sort($array, $on, $order=SORT_ASC){
+
+        $new_array = array();
+        $sortable_array = array();
+    
+        if (count($array) > 0) {
+            foreach ($array as $k => $v) {
+                if (is_array($v)) {
+                    foreach ($v as $k2 => $v2) {
+                        if ($k2 == $on) {
+                            $sortable_array[$k] = $v2;
+                        }
+                    }
+                } else {
+                    $sortable_array[$k] = $v;
+                }
+            }
+    
+            switch ($order) {
+                case SORT_ASC:
+                    asort($sortable_array);
+                    break;
+                case SORT_DESC:
+                    arsort($sortable_array);
+                    break;
+            }
+    
+            foreach ($sortable_array as $k => $v) {
+                $new_array[$k] = $array[$k];
+            }
+        }
+        return $new_array;
+    }
+  
+    echo '<br><b><h3>Langkah 3 : Pengurutan Kalimat</h3></b>';
+    $sorted = array_sort($PengurutanKalimatArray, "jumlah", SORT_DESC);
+    // die(var_dump($sorted));
+    echo 
+    '<table border="1" width="30%">'.
+    '<tr>'.
+        '<th>Dokumen</th>'.
+        '<th>Score Pembobotan</th>'.
+    '</tr>';
+
+    foreach($sorted as $key => $value){
+        // die(var_dump($value));
+        echo '<tr><td align="center">'. $value["dokumen"] .'</td>';
+        echo '<td align="center">'. $value["jumlah"] .'</td></tr>';
+    }
+    echo '</table>';
+
+    $n = 3;
+    echo '<br><b><h3>Langkah 4 : AMBIL N('. $n .') KALIMAT SEBAGAI RINGKASAN </h3></b>';
+    $indexSorted = 0;
+    foreach($sorted as $key => $value){
+        $indexSorted++;
+        echo "<b>" . $value["dokumen"] . "</b><br>" . $value["kalimat"] . "<br><br>";
+        if($indexSorted >= $n){
+            break;
+        }
+    }
+
+    echo "<b>Kalimat Gabungan : </b><br>";
+    $indexSortedLagi = 0;
+    foreach($sorted as $key => $value){
+        
+        $indexSortedLagi++;
+        if($indexSortedLagi >= $n){
+            echo " " . trim($value["kalimat"]). ".";
+            break;
+        } else {
+            echo " " . trim($value["kalimat"]). ",";
+        }
+    }
+
+
 ?>
-   
+
