@@ -1,7 +1,8 @@
 <?php 
 include_once "connect.php";
 
-$kata = "Pada suatu hari petani tersebut pergi ke sungai di dekat tempat tinggalnya, ia bermaksud mencari ikan untuk lauknya hari ini. Dengan hanya berbekal sebuah kail, umpan dan tempat ikan, ia pun langsung menuju ke sungai. Setelah sesampainya di sungai, petani tersebut langsung melemparkan kailnya. Sambil menunggu kailnya dimakan ikan, petani tersebut berdoa,“Ya Alloh, semoga aku dapat ikan banyak hari ini”. Beberapa saat setelah berdoa, kail yang dilemparkannya tadi nampak bergoyang-goyang. Ia segera menarik kailnya. Petani tersebut sangat senang sekali, karena ikan yang didapatkannya sangat besar dan cantik sekali";
+//$kata = "Pada suatu hari petani tersebut pergi ke sungai di dekat tempat tinggalnya, ia bermaksud mencari ikan untuk lauknya hari ini. Dengan hanya berbekal sebuah kail, umpan dan tempat ikan, ia pun langsung menuju ke sungai. Setelah sesampainya di sungai, petani tersebut langsung melemparkan kailnya. Sambil menunggu kailnya dimakan ikan, petani tersebut berdoa,“Ya Alloh, semoga aku dapat ikan banyak hari ini”. Beberapa saat setelah berdoa, kail yang dilemparkannya tadi nampak bergoyang-goyang. Ia segera menarik kailnya. Petani tersebut sangat senang sekali, karena ikan yang didapatkannya sangat besar dan cantik sekali";
+$kata = 'Dahulu kala, ada seekor kelinci yang populer karena kesombongannya. Ada seekor kura-kura yang pernah diejeknya lamban dan bodoh, menantang si kelinci sombong untuk adu lari cepat. Sebenarnya kura-kura tak mau berurusan dengan kelinci, tapi ia ingin memberinya sedikit pelajaran.Dengan penuh percaya diri, kelinci menyetujui tantangan kura-kura tersebut. Ia berpikir mana mungkin kura-kura yang berjalan super lambat itu bisa mengalahkannya. Kemudian, mereka sepakat untuk menentukan jalur panjang yang akan dilewati untuk adu lari.Pertandingan keduanya tak ayal mengundang penasaran hewan-hewan yang lain. Mereka semua juga ingin menyaksikan bagaimana si kura-kura bisa mengalahkan kelinci. Para hewan menunjukkan dukungannya terhadap si kura-kura karena mereka juga tidak menyukai sifat kelinci yang sombong itu.Seekor kera ditunjuk sebagai wasit untuk mengawasi jalannya pertandingan tersebut. Saat perlombaan baru saja dimulai, kelinci pun melesat jauh meninggalkan kura-kura. Tak ingin menyerah begitu saja, kura-kura tetap berusaha sekuat tenaga dan menambah kecepatan larinya.Karena merasa kura-kura masih tertinggal jauh dibelakangnya, di tengah-tengah waktu perlombaan dia memutuskan untuk istirahat dan tertidur. Namun saat terbangun, kelinci sungguh kaget karena ternyata kura-kura telah sampai di garis finish. Mendapatkan fakta tersebut, para hewan lain pun bersorak gembira dan si kelinci pulang dengan rasa malu';
 echo "<b><h3>Kata asli :</b></h3> $kata";
 echo "<br>";
 echo "<b><h3>Langkah 1 : pisahkan dokumen</h3></b>";
@@ -54,7 +55,7 @@ $KATA_DASAR_TABLE = array();
 }
 
 echo '<br>'.
-    '<table border="1" style="width:50%;">'.
+    '<table border="1" style="width:75%;">'.
     '<tr>'.
         '<th rowspan="2">Q</th>'.
         '<th colspan="'. sizeof($hasilStemming) .'">tf</th>'.
@@ -103,7 +104,7 @@ echo '<br>'.
 ?>
 
 <br><br>
-<table border="1" style="width:50%;">
+<table border="1" style="width:75%;">
     <tr>
         <th rowspan="2">Q</th>
         <th colspan="<?= sizeof($hasilStemming); ?>">W = tf * (IDF +1)</th>
