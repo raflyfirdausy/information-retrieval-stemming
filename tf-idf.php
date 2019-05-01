@@ -68,10 +68,15 @@ echo '<br>'.
         echo "<th>D". ($i + 1) ."</th>";
     }
     echo '</tr>';
-
+    $idfPlus1Array = array();
     foreach($KATA_DASAR_TABLE as $a){
         // echo $aw . " - " . $he . "<br>";
         echo "<tr><td>$a</td>";
+        $df = (int) 0;
+        $Ddf = (float) 0;
+        $idf = (float) 0;
+        $idfPlus1 = (float) 0;
+        
         for($i = 0 ; $i < sizeof($hasilStemming) ; $i++ ){
             $_pisah2 = preg_replace('/\s+/', '_', $hasilStemming[$i]);
             $_pisah3 = explode("_", $_pisah2);
@@ -82,11 +87,52 @@ echo '<br>'.
                 }
             }
             echo "<td align='center'>$count</td>";
+            $df = $df + $count;        
         }
+        $Ddf = round((sizeof($hasilStemming) / (int) $df),2);
+        $idf = round((1 / $df), 2);
+        $idfPlus1 = 1 + $idf;
+        array_push($idfPlus1Array, $idfPlus1);
+        echo "<td align='center'>$df</td>";
+        echo "<td align='center'>$Ddf</td>";
+        echo "<td align='center'>$idf</td>";
+        echo "<td align='center'>$idfPlus1</td>";
         echo "</tr>";
     }
-    
-
     echo '</table>';
+?>
 
+<br><br>
+<table border="1" style="width:75%;">
+    <tr>
+        <th rowspan="2">Q</th>
+        <th colspan="<?= sizeof($hasilStemming); ?>">W = tf * (IDF +1)</th>
+    </tr>
+    <tr>
+        <?php 
+         for($i = 0 ; $i < sizeof($hasilStemming) ; $i++ ){
+            echo "<th>D". ($i + 1) ."</th>";
+        }
+        $indexW = 0;
+        foreach($KATA_DASAR_TABLE as $a){
+            echo "<tr><td>$a</td>";
+
+            for($i = 0 ; $i < sizeof($hasilStemming) ; $i++ ){
+                $_pisah2 = preg_replace('/\s+/', '_', $hasilStemming[$i]);
+                $_pisah3 = explode("_", $_pisah2);
+                $count = 0;
+                foreach($_pisah3 as $p){
+                    if($p == $a){
+                        $count++;
+                    }
+                }
+                echo "<td align='center'>". ($count * $idfPlus1Array[$indexW])  ."</td>";             
+            }
+            echo "</tr>";
+            $indexW++;
+        }
+
+        ?>
+    </tr>
+</table>
    
